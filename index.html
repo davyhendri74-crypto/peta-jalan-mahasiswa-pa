@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Peta Jalan Mahasiswa PA</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#1e293b}
+header{background:#123b65;color:white;padding:24px 18px}
+header h1{font-size:23px;margin:0 0 8px}
+header p{margin:0;color:#dbeafe;font-size:14px}
+main{max-width:950px;margin:auto;padding:18px}
+h2{font-size:19px}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{background:white;padding:18px;border-radius:12px;box-shadow:0 2px 8px #0000000c}
+.number{font-size:27px;font-weight:bold;color:#176b49;margin-top:10px}
+.panel{background:white;padding:18px;border-radius:12px;margin-top:16px}
+input,select,button{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;margin:6px 0}
+button{background:#176b49;color:white;border:0;font-weight:bold}
+.note{font-size:13px;color:#64748b;line-height:1.6}
+footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
+@media(min-width:650px){.cards{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header>
+<h1>Peta Jalan Kehidupan Mahasiswa</h1>
+<p>Dashboard Pembimbing Akademik · FEBI UIN Imam Bonjol Padang</p>
+</header>
+<main>
+<h2>Ringkasan Akademik</h2>
+<div class="cards">
+<div class="card">Mahasiswa<div class="number" id="mhs">—</div></div>
+<div class="card">Pembimbing PA<div class="number" id="pa">—</div></div>
+<div class="card">Peta Jalan<div class="number" id="roadmap">—</div></div>
+<div class="card">Perlu Tindak Lanjut<div class="number" id="follow">—</div></div>
+</div>
+<div class="panel">
+<h2>Akses Pembimbing Akademik</h2>
+<p>Gunakan pencarian untuk menyiapkan penelusuran mahasiswa bimbingan.</p>
+<input id="nim" placeholder="Masukkan NIM mahasiswa">
+<button onclick="cari()">Cari Mahasiswa</button>
+<p id="hasil"></p>
+<p class="note">Pencarian ini masih berupa demonstrasi dan belum mengambil data mahasiswa.</p>
+</div>
+<div class="panel">
+<h2>Peta Jalan Studi</h2>
+<label>Program Studi</label>
+<select id="prodi">
+<option>Manajemen Bisnis Syariah</option>
+<option>Ekonomi Syariah</option>
+<option>Perbankan Syariah</option>
+<option>Akuntansi Syariah</option>
+</select>
+<label>Tahap studi</label>
+<select id="tahap">
+<option>Semester 1–2: Adaptasi dan fondasi</option>
+<option>Semester 3–4: Penguatan kompetensi</option>
+<option>Semester 5–6: Riset dan pengalaman</option>
+<option>Semester 7–8: Penyelesaian studi</option>
+</select>
+<label>Catatan rencana mahasiswa</label>
+<input id="catatan" placeholder="Tuliskan target akademik">
+<button onclick="simpan()">Tampilkan Ringkasan</button>
+<div id="ringkasan"></div>
+</div>
+<p class="note">Versi awal dashboard. Data mahasiswa, autentikasi, unggah dokumen, dan penyimpanan Supabase belum diaktifkan.</p>
+</main>
+<footer>FEBI · UIN Imam Bonjol Padang</footer>
+<script>
+function cari(){
+let n=document.getElementById('nim').value.trim();
+document.getElementById('hasil').textContent=n?
+"NIM "+n+" siap dicari setelah database dihubungkan.":"Silakan masukkan NIM terlebih dahulu.";
+}
+function simpan(){
+let p=document.getElementById('prodi').value;
+let t=document.getElementById('tahap').value;
+let c=document.getElementById('catatan').value||"Belum ada catatan";
+document.getElementById('ringkasan').innerHTML="";
+let d=document.createElement('p');
+d.textContent="Program studi: "+p+" | Tahap: "+t+" | Target: "+c;
+document.getElementById('ringkasan').appendChild(d);
+}
+</script>
+</body>
+</html>
