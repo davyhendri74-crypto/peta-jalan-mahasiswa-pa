@@ -1,313 +1,471 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#123b65">
-<title>Peta Jalan Mahasiswa PA — FEBI UIN Imam Bonjol Padang</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peta Jalan Mahasiswa PA | FEBI UIN Imam Bonjol</title>
 <style>
-:root{--navy:#123b65;--green:#176b49;--bg:#f2f5f9;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0}
+:root{--navy:#064a7d;--blue:#0b6eaa;--bg:#f2f5f9;--line:#d9e2eb;--muted:#5e6f80}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px Arial,sans-serif}
-header{background:linear-gradient(120deg,#0b2948,#174d79);color:white;padding:22px 18px}
-header h1{font-size:22px;margin:0 0 6px}
-header p{font-size:13px;color:#dbeafe;margin:0}
-main{max-width:1100px;margin:auto;padding:16px}
-.muted{color:var(--muted);font-size:13px;line-height:1.6}
-.panel,.auth,.stat{background:white;border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
-.auth{max-width:460px;margin:18px auto}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#1e2b37}
+header{background:var(--navy);color:#fff;padding:20px 15px}
+header .wrap,main{max-width:1150px;margin:auto}
+h1{margin:0;font-size:1.35rem}
+header p{margin:7px 0 0;color:#e1edf6;font-size:.93rem}
+main{padding:16px 12px 35px}
+.card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px;margin-bottom:15px;box-shadow:0 3px 12px #17324d0a}
+h2{font-size:1.08rem;margin:0 0 12px}
+.note{color:var(--muted);font-size:.88rem;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.stat{padding:13px;background:#e8f2fa;border-radius:10px}
+.stat b{display:block;font-size:1.35rem;color:var(--navy)}
+.stat span{font-size:.8rem;color:var(--muted)}
+.tools{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;align-items:end}
+label{display:block;font-weight:bold;font-size:.85rem;margin:8px 0 5px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbd6e1;border-radius:8px;font:inherit;background:#fff}
+button{font:inherit;font-weight:bold;padding:11px 13px;border:0;border-radius:8px;cursor:pointer}
+.primary{background:var(--blue);color:#fff}
+.secondary{background:#e6eff7;color:var(--navy)}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:8px;margin-top:12px}
+table{width:100%;min-width:760px;border-collapse:collapse;font-size:.88rem}
+th{background:var(--navy);color:white;text-align:left;padding:11px;white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:nth-child(even){background:#f3f5f7}
+.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#e6f4eb;color:#17643e;font-size:.78rem}
+.pending{background:#fff0cf;color:#775500}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{background:white;color:var(--navy);border:1px solid var(--line)}
+.tab.active{background:var(--blue);color:white}
 .hidden{display:none!important}
-.btn,input,select{font:inherit;border-radius:8px}
-.btn{border:0;padding:11px 14px;background:var(--green);color:white;font-weight:bold;cursor:pointer}
-.outline{background:white;color:var(--navy);border:1px solid var(--line)}
-.full{width:100%;margin:4px 0}
-.field{margin:11px 0}
-.field label{display:block;font-size:12px;font-weight:bold;margin-bottom:5px;color:#475569}
-.field input,.field select{width:100%;padding:11px;border:1px solid #cbd5e1;background:white}
-.navs{display:flex;gap:6px;overflow:auto}
-.nav{white-space:nowrap;border:0;background:white;padding:12px;border-radius:8px}
-.nav.active{background:#eaf1f8;color:var(--navy);font-weight:bold}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.stat small{color:var(--muted)}
-.num{font-size:25px;font-weight:bold;color:var(--navy);margin-top:8px}
-table{border-collapse:collapse;width:100%;font-size:13px}
-td,th{text-align:left;padding:10px;border-bottom:1px solid var(--line)}
-th{font-size:11px;color:var(--muted)}
-.tablewrap{overflow:auto}
-.msg{font-size:13px;line-height:1.6;margin-top:10px;overflow-wrap:anywhere}
-.notice{background:#fff7e6;border:1px solid #f0d79e;color:#76551a;border-radius:9px;padding:12px;font-size:12px;line-height:1.6;margin:12px 0}
-@media(max-width:650px){.stats{grid-template-columns:1fr 1fr}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.status{background:#eef4f8;border-radius:8px;padding:10px;margin-top:10px;white-space:pre-wrap;font-size:.88rem}
+.student-card{border:1px solid var(--line);border-radius:9px;padding:12px;margin:8px 0}
+.student-card strong{display:block}
+.student-card small{color:var(--muted)}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:12px}
+@media(max-width:650px){
+.tools,.grid{grid-template-columns:1fr}
+.stats{grid-template-columns:1fr 1fr}
+header{padding:17px 13px}
+.card{padding:13px}
+}
 </style>
 </head>
 <body>
 <header>
-<h1>🧭 Peta Jalan Mahasiswa PA</h1>
-<p>Dashboard Pembimbing Akademik · FEBI UIN Imam Bonjol Padang</p>
+<div class="wrap">
+<h1>Dashboard Peta Jalan Mahasiswa PA</h1>
+<p>Fakultas Ekonomi dan Bisnis Islam · UIN Imam Bonjol Padang</p>
+</div>
 </header>
-
 <main>
-<p class="muted">Status koneksi: <b id="connection">Memeriksa…</b></p>
-
-<section id="authPanel" class="auth">
-<div id="loginBox">
-<h2>Masuk</h2>
-<p class="muted">Gunakan akun yang sudah terdaftar.</p>
-<form id="loginForm">
-<div class="field"><label>Email kampus</label><input id="email" type="email" required></div>
-<div class="field"><label>Kata sandi</label><input id="password" type="password" required></div>
-<button class="btn full" type="submit">Masuk</button>
-<button class="btn outline full" type="button" id="goRegister">Daftar sebagai mahasiswa</button>
-<div id="loginMsg" class="msg"></div>
-</form>
+<div class="tabs">
+<button class="tab active" data-panel="daftar">Daftar Mahasiswa PA</button>
+<button class="tab" data-panel="portal">Portal Mahasiswa</button>
+<button class="tab" data-panel="tentang">Petunjuk & Data</button>
 </div>
 
-<div id="registerBox" class="hidden">
-<h2>Pendaftaran mahasiswa</h2>
-<p class="muted">Lengkapi data akademik. Pendaftaran menunggu verifikasi dosen PA.</p>
-<form id="registerForm">
-<div class="field"><label>Nama lengkap</label><input id="regName" required maxlength="120"></div>
-<div class="field"><label>NIM</label><input id="regNim" required maxlength="30"></div>
-<div class="field"><label>Program studi</label>
-<select id="regProgram" required>
-<option value="">Pilih program studi</option>
-<option>Manajemen Bisnis Syariah</option>
+<section id="daftar" class="panel">
+<div class="card">
+<h2>Daftar Mahasiswa Bimbingan Akademik</h2>
+<p class="note">Daftar ini diekstrak dari halaman SIAKAD yang disimpan untuk periode 2026 Ganjil. Total 50 mahasiswa pada file sumber. Data ini bukan sinkronisasi otomatis.</p>
+<div class="stats">
+<div class="stat"><b id="total">0</b><span>Baris data awal</span></div>
+<div class="stat"><b id="shown">0</b><span>Hasil pencarian</span></div>
+<div class="stat"><b>PDF / DOC / DOCX</b><span>Format peta jalan hidup</span></div>
+</div>
+<div class="tools">
+<div>
+<label for="search">Cari NIM atau nama</label>
+<input id="search" placeholder="Contoh: 2316010127 atau Rita">
+</div>
+<div>
+<label for="prodiFilter">Filter program studi</label>
+<select id="prodiFilter">
+<option value="">Semua prodi</option>
 <option>Ekonomi Syariah</option>
 <option>Perbankan Syariah</option>
 <option>Akuntansi Syariah</option>
-</select></div>
-<div class="field"><label>Angkatan (tahun)</label><input id="regCohort" inputmode="numeric" maxlength="4" placeholder="2025" required></div>
-<div class="field"><label>Email kampus</label><input id="regEmail" type="email" required></div>
-<div class="field"><label>Kata sandi (minimal 8 karakter)</label><input id="regPassword" type="password" minlength="8" required></div>
-<button class="btn full" type="submit">Kirim pendaftaran</button>
-<button class="btn outline full" type="button" id="backLogin">Kembali ke masuk</button>
-<div id="registerMsg" class="msg"></div>
-</form>
-<div class="notice">Pendaftaran belum membuktikan status mahasiswa aktif. Verifikasi tetap diperlukan.</div>
+</select>
 </div>
-</section>
-
-<section id="dashboard" class="hidden">
-<div class="navs">
-<button class="nav active" data-tab="summary">Ringkasan</button>
-<button class="nav" data-tab="students">Mahasiswa</button>
-<button class="nav" data-tab="account">Akun</button>
-</div>
-
-<div id="summaryTab">
-<div class="stats">
-<div class="stat"><small>Profil terlihat</small><div class="num" id="profileCount">—</div></div>
-<div class="stat"><small>Pembimbing PA</small><div class="num" id="advisorCount">—</div></div>
-<div class="stat"><small>Status akun</small><div class="num" style="font-size:18px" id="accountStatus">Aktif</div></div>
-</div>
-<div class="panel">
-<h3>Alur perjalanan studi · 8 semester</h3>
-<p>Semester 1–2: Fondasi akademik</p>
-<p>Semester 3–4: Penguatan kompetensi</p>
-<p>Semester 5–6: Riset, magang, dan MBKM</p>
-<p>Semester 7–8: Penyelesaian studi</p>
-<p id="activity" class="muted"></p>
-<button class="btn outline" id="refresh">Muat ulang data</button>
+<div>
+<label for="angkatanFilter">Filter angkatan</label>
+<select id="angkatanFilter">
+<option value="">Semua angkatan</option>
+<option>2019</option><option>2020</option><option>2021</option>
+<option>2022</option><option>2023</option><option>2024</option>
+</select>
 </div>
 </div>
-
-<div id="studentsTab" class="panel hidden">
-<h3>Daftar mahasiswa</h3>
-<input id="search" placeholder="Cari nama atau NIM">
+<div class="actions">
+<button class="secondary" id="downloadCsv">Unduh daftar CSV</button>
+<button class="secondary" id="printBtn">Cetak daftar</button>
+</div>
 <div class="tablewrap">
 <table>
-<thead><tr><th>Nama</th><th>NIM</th><th>Program studi</th><th>Angkatan</th><th>Status</th></tr></thead>
-<tbody id="studentRows"></tbody>
+<thead><tr><th>No.</th><th>NIM</th><th>Nama Mahasiswa</th><th>Program Studi</th><th>Angkatan</th><th>Status Smt.</th><th>Semester</th></tr></thead>
+<tbody id="rows"></tbody>
 </table>
 </div>
-</div>
-
-<div id="accountTab" class="panel hidden">
-<h3>Akun & koneksi</h3>
-<p id="accountInfo" class="muted"></p>
-<p id="profileInfo" class="notice"></p>
-<button id="logout" class="btn outline">Keluar</button>
+<p class="note">Keterangan status mengikuti huruf yang tampak pada file sumber: A atau N. Verifikasi kembali dengan SIAKAD sebelum dipakai untuk keputusan akademik.</p>
 </div>
 </section>
-</main>
 
+<section id="portal" class="panel hidden">
+<div class="card">
+<h2>Portal Mahasiswa — Masuk / Daftar</h2>
+<p class="note">Gunakan email aktif. Pendaftaran mahasiswa baru akan berstatus menunggu verifikasi dosen PA. Jangan gunakan password yang sama dengan akun SIAKAD.</p>
+<div class="grid">
+<div><label for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="email" placeholder="nama@email.com"></div>
+<div><label for="authPassword">Password (minimal 8 karakter)</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="Password"></div>
+</div>
+<div class="actions">
+<button class="primary" id="signupBtn">Daftar akun</button>
+<button class="secondary" id="loginBtn">Masuk</button>
+<button class="secondary" id="logoutBtn">Keluar</button>
+</div>
+<div class="status" id="authStatus">Belum masuk.</div>
+</div>
+
+<div class="card">
+<h2>Data Mahasiswa dan Peta Jalan Hidup</h2>
+<div class="grid">
+<div><label for="nim">NIM</label><input id="nim" inputmode="numeric" placeholder="Masukkan NIM 10 digit"></div>
+<div><label for="nama">Nama lengkap sesuai SIAKAD</label><input id="nama" placeholder="Nama lengkap"></div>
+<div>
+<label for="prodi">Program studi</label>
+<select id="prodi">
+<option value="">Pilih program studi</option>
+<option>Ekonomi Syariah</option>
+<option>Perbankan Syariah</option>
+<option>Akuntansi Syariah</option>
+<option>Manajemen Bisnis Syariah</option>
+</select>
+</div>
+<div><label for="angkatan">Angkatan</label><input id="angkatan" inputmode="numeric" placeholder="Contoh: 2023"></div>
+</div>
+<label for="tujuan">Ringkasan tujuan hidup dan akademik</label>
+<textarea id="tujuan" rows="4" placeholder="Target akademik, karier, keluarga, finansial, sosial, dan pengembangan diri."></textarea>
+<label for="file">Dokumen peta jalan hidup (PDF/DOC/DOCX, maks. 10 MB)</label>
+<input id="file" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+<div class="actions"><button class="primary" id="submitRoadmapBtn">Simpan data & unggah dokumen</button></div>
+<div class="status" id="submitStatus">Masuk terlebih dahulu sebelum menyimpan.</div>
+<p class="note">Data ringkasan disimpan sebagai berkas JSON di bucket privat bersama dokumen. Profil dasar disimpan pada tabel <code>profiles</code>. Pastikan policy RLS Supabase sudah dipasang.</p>
+</div>
+</section>
+
+<section id="tentang" class="panel hidden">
+<div class="card">
+<h2>Petunjuk dan batas data</h2>
+<ul>
+<li>Daftar awal memuat 50 mahasiswa dari file SIAKAD periode 2026 Ganjil yang diberikan.</li>
+<li>Nama atau NIM yang tidak terlihat jelas tidak dimasukkan agar tidak mengarang data.</li>
+<li>Kolom status semester dan semester hanya diisi jika terlihat pada file sumber.</li>
+<li>Periksa kembali perubahan data pada SIAKAD sebelum keputusan akademik.</li>
+<li>Unggah dokumen pribadi mahasiswa sebaiknya memakai autentikasi, penyimpanan privat, dan kebijakan akses yang membatasi mahasiswa pada dokumennya sendiri.</li>
+</ul>
+<p class="note">Halaman ini tidak terhubung langsung ke SIAKAD. Pengiriman formulir menggunakan Supabase.</p>
+</div>
+</section>
+<footer>Dashboard Peta Jalan Mahasiswa PA · FEBI UIN Imam Bonjol Padang</footer>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL="https://atwogepalbdygirqbkrq.supabase.co";
-const SUPABASE_KEY="sb_publishable_qE1DYszSXEaNsY01PPw6Dg_EkzKGOn-";
-const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const $=id=>document.getElementById(id);
-let currentProfile=null,profiles=[];
+const students = [
+{"nim":"2116010080","nama":"SALSABILA ASYIFA RAMADHANI","prodi":"Ekonomi Syariah","angkatan":"2021","status":"A","semester":"11"},
+{"nim":"2116010090","nama":"NIKEN FITRIA LESTARI","prodi":"Ekonomi Syariah","angkatan":"2021","status":"N","semester":"11"},
+{"nim":"2216010018","nama":"KHAIRUL IHSAN TANJUNG","prodi":"Ekonomi Syariah","angkatan":"2022","status":"N","semester":"9"},
+{"nim":"2216010024","nama":"DICKY AKHMAD AZHARI SORMIN","prodi":"Ekonomi Syariah","angkatan":"2022","status":"A","semester":"9"},
+{"nim":"2216010026","nama":"OKI FATMA YETRI","prodi":"Ekonomi Syariah","angkatan":"2022","status":"A","semester":"9"},
+{"nim":"2216010034","nama":"SALMA BADRIYAH","prodi":"Ekonomi Syariah","angkatan":"2022","status":"A","semester":"9"},
+{"nim":"2316010127","nama":"RITA INDAH SARI","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010128","nama":"ANNISA NAHDIYAH","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010129","nama":"KHAIRINA AZRA","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010130","nama":"FITRI HALIDA","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010131","nama":"TIARA ANGGRAINI","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010132","nama":"SULISTYA ANGGRAINI","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010133","nama":"VITA RAHMA YENTI","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010134","nama":"MUHAMMAD ZAHKY PRATAMA","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010135","nama":"ROSINTAN","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010136","nama":"WINA MIFTAHURRAHMA","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010137","nama":"SUCI RAMADHANI","prodi":"Ekonomi Syariah","angkatan":"2023","status":"N","semester":"7"},
+{"nim":"2316010138","nama":"KETUA UNNISA AZZAHRA","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010139","nama":"RIZKY FADILLAH","prodi":"Ekonomi Syariah","angkatan":"2023","status":"N","semester":"7"},
+{"nim":"2316010140","nama":"ONGKY FEBRIANSYAH","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010141","nama":"REZA VITRIANI","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010142","nama":"SUCI ELNA VELITA","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010143","nama":"DINDA RESTI AMELIA","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010144","nama":"AULIA RAHAYU","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316010145","nama":"SALSABILA JANISA","prodi":"Ekonomi Syariah","angkatan":"2023","status":"N","semester":"7"},
+{"nim":"2316010146","nama":"NADIA","prodi":"Ekonomi Syariah","angkatan":"2023","status":"N","semester":"7"},
+{"nim":"2316010147","nama":"AFRIANA SIREGAR","prodi":"Ekonomi Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2416010056","nama":"RIZKY ABDULLAH LUBIS","prodi":"Ekonomi Syariah","angkatan":"2024","status":"N","semester":"5"},
+{"nim":"2416010057","nama":"MANDA SEPTYANI","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"2416010058","nama":"IRMA YUSRA","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"2416010059","nama":"LULU ANGRIANI","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"2416010060","nama":"NURSAYBAH AZZAHRA","prodi":"Ekonomi Syariah","angkatan":"2024","status":"N","semester":"5"},
+{"nim":"2416010061","nama":"MAULANA ABDUL MALIK","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"2416010062","nama":"MAHARANI","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"2416010063","nama":"CHEVIN FITRAH ANTONI","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"2416010064","nama":"MUHAMMAD HANIF","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"2416010066","nama":"DINDA CAHYAHNI","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"2416010067","nama":"Ahmad Bayu Nugroho","prodi":"Ekonomi Syariah","angkatan":"2024","status":"N","semester":"5"},
+{"nim":"2416010068","nama":"WENI AULIYA","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"2416010069","nama":"ABDUL HAMID","prodi":"Ekonomi Syariah","angkatan":"2024","status":"A","semester":"5"},
+{"nim":"1916050078","nama":"ROSA GUSHARINARTI","prodi":"Perbankan Syariah","angkatan":"2019","status":"N","semester":"15"},
+{"nim":"2116050013","nama":"ELA MARIA","prodi":"Perbankan Syariah","angkatan":"2021","status":"A","semester":"11"},
+{"nim":"2216050035","nama":"SRI SAKINAH PUTRI SITANGGANG","prodi":"Perbankan Syariah","angkatan":"2022","status":"A","semester":"9"},
+{"nim":"2316050031","nama":"SHIFAURRAHMAH","prodi":"Perbankan Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316050032","nama":"AQILA RAHMADANI","prodi":"Perbankan Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316050033","nama":"FADHILAH AZ-ZAHRA","prodi":"Perbankan Syariah","angkatan":"2023","status":"N","semester":"7"},
+{"nim":"2316050034","nama":"AMELIA FILZA","prodi":"Perbankan Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2316050035","nama":"SHIRLY AMRI","prodi":"Perbankan Syariah","angkatan":"2023","status":"A","semester":"7"},
+{"nim":"2016040035","nama":"NOVIA RAHMADANI","prodi":"Akuntansi Syariah","angkatan":"2020","status":"A","semester":"13"},
+{"nim":"2116040026","nama":"GISTA RANIASA","prodi":"Akuntansi Syariah","angkatan":"2021","status":"N","semester":"11"}
+];
 
-function authView(which){
- $('loginBox').classList.toggle('hidden',which!=='login');
- $('registerBox').classList.toggle('hidden',which!=='register');
-}
-$('goRegister').onclick=()=>authView('register');
-$('backLogin').onclick=()=>authView('login');
+const $ = id => document.getElementById(id);
 
-$('loginForm').onsubmit=async e=>{
- e.preventDefault();
- $('loginMsg').textContent='Memeriksa akun…';
- const {error}=await db.auth.signInWithPassword({
-  email:$('email').value.trim(),
-  password:$('password').value
- });
- if(error){$('loginMsg').textContent='Gagal masuk: '+error.message;return;}
- await load();
-};
-
-$('registerForm').onsubmit=async e=>{
- e.preventDefault();
- const msg=$('registerMsg');
- const name=$('regName').value.trim();
- const nim=$('regNim').value.trim();
- const program=$('regProgram').value;
- const cohort=$('regCohort').value.trim();
- const email=$('regEmail').value.trim().toLowerCase();
- const password=$('regPassword').value;
-
- if(!/^[0-9]{4}$/.test(cohort)){
-  msg.textContent='Angkatan harus berupa tahun 4 digit, misalnya 2025.';
-  return;
- }
- if(!name||!nim||!program){
-  msg.textContent='Lengkapi semua data.';
-  return;
- }
-
- msg.textContent='Mengirim pendaftaran…';
- const {data,error}=await db.auth.signUp({
-  email,password,
-  options:{data:{
-   full_name:name,
-   nim:nim,
-   program_study:program,
-   cohort:cohort,
-   role:'student'
-  }}
- });
- if(error){
-  msg.textContent='Pendaftaran gagal: '+error.message;
-  return;
- }
-
- $('registerForm').reset();
- if(data.session){
-  msg.textContent='Akun dibuat. Memeriksa profil pendaftaran…';
-  await load();
- }else{
-  msg.textContent='Akun dibuat. Periksa email untuk konfirmasi. Profil akademik harus dibuat oleh trigger database Supabase.';
- }
-};
-
-document.querySelectorAll('[data-tab]').forEach(b=>{
- b.onclick=()=>{
-  document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));
-  ['summary','students','account'].forEach(t=>{
-   $(t+'Tab').classList.toggle('hidden',t!==b.dataset.tab);
+function draw(){
+  const q=$("search").value.toLowerCase().trim();
+  const p=$("prodiFilter").value;
+  const a=$("angkatanFilter").value;
+  const list=students.filter(s=>
+    (!q||(s.nim+" "+s.nama).toLowerCase().includes(q)) &&
+    (!p||s.prodi===p) &&
+    (!a||s.angkatan===a)
+  );
+  $("rows").innerHTML="";
+  list.forEach((s,i)=>{
+    const tr=document.createElement("tr");
+    [i+1,s.nim,s.nama,s.prodi,s.angkatan,s.status,s.semester||"—"].forEach(v=>{
+      const td=document.createElement("td");
+      td.textContent=v;
+      tr.appendChild(td);
+    });
+    $("rows").appendChild(tr);
   });
- };
+  $("total").textContent=students.length;
+  $("shown").textContent=list.length;
+}
+
+$("search").addEventListener("input",draw);
+$("prodiFilter").addEventListener("change",draw);
+$("angkatanFilter").addEventListener("change",draw);
+
+document.querySelectorAll(".tab").forEach(b=>
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>
+      x.classList.toggle("active",x===b)
+    );
+    document.querySelectorAll(".panel").forEach(p=>
+      p.classList.toggle("hidden",p.id!==b.dataset.panel)
+    );
+  })
+);
+
+$("downloadCsv").onclick=()=>{
+  const head=["NIM","Nama Mahasiswa","Program Studi","Angkatan","Status Smt.","Semester"];
+  const data=[head,...students.map(s=>[
+    s.nim,s.nama,s.prodi,s.angkatan,s.status,s.semester
+  ])];
+  const csv=data.map(r=>r.map(v=>
+    '"'+String(v).replace(/"/g,'""')+'"'
+  ).join(",")).join("\r\n");
+  const u=URL.createObjectURL(
+    new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"})
+  );
+  const a=document.createElement("a");
+  a.href=u;
+  a.download="daftar_awal_mahasiswa_PA.csv";
+  a.click();
+  URL.revokeObjectURL(u);
+};
+
+$("printBtn").onclick=()=>window.print();
+
+// Konfigurasi Supabase proyek Anda
+const SUPABASE_URL="https://atwogepalbdygirqbkrq.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_qE1DYszSXEaNsY01PPw6Dg_EkzKGOn-";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+let currentUser=null;
+
+function msg(id,text){
+  $(id).textContent=text;
+}
+
+async function refreshSession(){
+  const {data}=await sb.auth.getSession();
+  currentUser=data.session?.user||null;
+  msg("authStatus",currentUser?
+    `Masuk sebagai ${currentUser.email}. User ID: ${currentUser.id}`:
+    "Belum masuk."
+  );
+}
+
+$("signupBtn").onclick=async()=>{
+  const email=$("authEmail").value.trim();
+  const password=$("authPassword").value;
+  if(!email||password.length<8){
+    msg("authStatus","Isi email dan password minimal 8 karakter.");
+    return;
+  }
+  msg("authStatus","Memproses pendaftaran...");
+  const {data,error}=await sb.auth.signUp({
+    email,password,options:{data:{role:"student"}}
+  });
+  if(error){
+    msg("authStatus","Gagal daftar: "+error.message);
+    return;
+  }
+  currentUser=data.user;
+  msg("authStatus",data.session?
+    "Akun berhasil dibuat dan sudah masuk.":
+    "Akun dibuat. Periksa email untuk konfirmasi, lalu masuk."
+  );
+  await refreshSession();
+};
+
+$("loginBtn").onclick=async()=>{
+  const email=$("authEmail").value.trim();
+  const password=$("authPassword").value;
+  msg("authStatus","Memproses login...");
+  const {data,error}=await sb.auth.signInWithPassword({email,password});
+  if(error){
+    msg("authStatus","Gagal masuk: "+error.message);
+    return;
+  }
+  currentUser=data.user;
+  await refreshSession();
+};
+
+$("logoutBtn").onclick=async()=>{
+  const {error}=await sb.auth.signOut();
+  currentUser=null;
+  msg("authStatus",error?
+    "Gagal keluar: "+error.message:
+    "Anda sudah keluar."
+  );
+};
+
+$("submitRoadmapBtn").onclick=async()=>{
+  try{
+    if(!currentUser){
+      msg("submitStatus","Silakan masuk terlebih dahulu.");
+      return;
+    }
+
+    const nim=$("nim").value.trim();
+    const nama=$("nama").value.trim();
+    const prodi=$("prodi").value;
+    const angkatan=$("angkatan").value.trim();
+    const tujuan=$("tujuan").value.trim();
+    const f=$("file").files[0];
+
+    if(!/^\d{10}$/.test(nim)||!nama||!prodi||
+       !/^\d{4}$/.test(angkatan)||!tujuan||!f){
+      msg("submitStatus","Lengkapi NIM 10 digit, nama, prodi, angkatan, tujuan, dan dokumen.");
+      return;
+    }
+
+    if(f.size>10*1024*1024){
+      msg("submitStatus","Ukuran dokumen melebihi 10 MB.");
+      return;
+    }
+
+    const official=students.find(s=>s.nim===nim);
+    if(!official){
+      msg("submitStatus","NIM tidak ditemukan pada daftar SIAKAD yang dimuat. Hubungi dosen PA untuk verifikasi.");
+      return;
+    }
+
+    if(official.nama.toLowerCase()!==nama.toLowerCase()){
+      msg("submitStatus","Nama tidak sama dengan daftar SIAKAD. Gunakan nama persis: "+official.nama);
+      return;
+    }
+
+    if(official.prodi!==prodi||official.angkatan!==angkatan){
+      msg("submitStatus","Prodi atau angkatan tidak cocok dengan daftar SIAKAD: "+official.prodi+", angkatan "+official.angkatan+".");
+      return;
+    }
+
+    msg("submitStatus","Menyimpan profil dan mengunggah dokumen...");
+
+    const {error:profileError}=await sb.from("profiles").upsert({
+      id:currentUser.id,
+      full_name:nama,
+      role:"student",
+      nim,
+      program_study:prodi,
+      cohort:angkatan,
+      verification_status:"pending"
+    },{onConflict:"id"});
+
+    if(profileError){
+      msg("submitStatus","Profil belum tersimpan: "+profileError.message+". Periksa policy RLS tabel profiles.");
+      return;
+    }
+
+    const safeName=f.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+    const folder=`${currentUser.id}/${nim}`;
+    const docPath=`${folder}/${Date.now()}_${safeName}`;
+
+    const {error:uploadError}=await sb.storage
+      .from("roadmap-private")
+      .upload(docPath,f,{
+        upsert:false,
+        contentType:f.type||"application/octet-stream"
+      });
+
+    if(uploadError){
+      msg("submitStatus","Profil tersimpan, tetapi unggah dokumen gagal: "+uploadError.message+". Periksa policy Storage bucket roadmap-private.");
+      return;
+    }
+
+    const record={
+      nim,nama,prodi,angkatan,tujuan,
+      file_name:f.name,
+      storage_path:docPath,
+      submitted_at:new Date().toISOString(),
+      user_id:currentUser.id
+    };
+
+    const jsonBlob=new Blob(
+      [JSON.stringify(record,null,2)],
+      {type:"application/json"}
+    );
+    const jsonPath=`${folder}/${Date.now()}_peta_jalan.json`;
+
+    const {error:jsonError}=await sb.storage
+      .from("roadmap-private")
+      .upload(jsonPath,jsonBlob,{
+        upsert:false,
+        contentType:"application/json"
+      });
+
+    if(jsonError){
+      msg("submitStatus","Dokumen terunggah, tetapi ringkasan JSON gagal disimpan: "+jsonError.message);
+      return;
+    }
+
+    msg("submitStatus","Berhasil. Profil berstatus menunggu verifikasi dosen PA. Dokumen dan ringkasan tersimpan di bucket privat Supabase.");
+  }catch(e){
+    msg("submitStatus","Terjadi kesalahan: "+e.message);
+  }
+};
+
+sb.auth.onAuthStateChange((_event,session)=>{
+  currentUser=session?.user||null;
+  msg("authStatus",currentUser?
+    `Masuk sebagai ${currentUser.email}.`:
+    "Belum masuk."
+  );
 });
 
-$('refresh').onclick=load;
-$('search').oninput=renderRows;
-$('logout').onclick=async()=>{await db.auth.signOut();await load();};
-
-function renderRows(){
- const q=$('search').value.toLowerCase().trim();
- const list=profiles.filter(p=>
-  [p.full_name,p.nim,p.program_study,p.cohort,p.verification_status]
-   .some(v=>String(v||'').toLowerCase().includes(q))
- );
- $('studentRows').innerHTML='';
- if(!list.length){
-  $('studentRows').innerHTML='<tr><td colspan="5">Belum ada profil yang dapat ditampilkan.</td></tr>';
-  return;
- }
- list.forEach(p=>{
-  const tr=document.createElement('tr');
-  [
-   p.full_name||'—',
-   p.nim||'—',
-   p.program_study||'—',
-   p.cohort||'—',
-   p.verification_status==='approved'?'Disetujui':
-   p.verification_status==='rejected'?'Ditolak':'Menunggu verifikasi'
-  ].forEach(v=>{
-   const td=document.createElement('td');
-   td.textContent=v;
-   tr.appendChild(td);
-  });
-  $('studentRows').appendChild(tr);
- });
-}
-
-async function load(){
- try{
-  const {data:{session},error}=await db.auth.getSession();
-  if(error)throw error;
-
-  if(!session){
-   $('connection').textContent='Supabase siap';
-   $('authPanel').classList.remove('hidden');
-   $('dashboard').classList.add('hidden');
-   return;
-  }
-
-  $('connection').textContent='Sesi aktif';
-  $('authPanel').classList.add('hidden');
-  $('dashboard').classList.remove('hidden');
-  $('accountInfo').textContent='Email: '+(session.user.email||'')+' · ID: '+session.user.id;
-
-  const p=await db.from('profiles')
-   .select('id,full_name,role,nim,program_study,cohort,verification_status')
-   .eq('id',session.user.id).maybeSingle();
-  if(p.error)throw p.error;
-  currentProfile=p.data;
-
-  $('profileInfo').textContent=currentProfile
-   ?('Nama: '+(currentProfile.full_name||'—')+
-     ' · Peran: '+currentProfile.role+
-     ' · Status: '+(currentProfile.verification_status||'belum diatur'))
-   :'Profil belum ada. Pastikan trigger pembuatan profil telah dipasang di Supabase.';
-
-  const count=await db.from('profiles').select('*',{count:'exact',head:true});
-  if(count.error)throw count.error;
-  $('profileCount').textContent=count.count??0;
-
-  const adv=await db.from('profiles')
-   .select('*',{count:'exact',head:true})
-   .in('role',['advisor','pembimbing']);
-  if(adv.error)throw adv.error;
-  $('advisorCount').textContent=adv.count??0;
-
-  let query=db.from('profiles')
-   .select('id,full_name,role,nim,program_study,cohort,verification_status')
-   .order('full_name');
-
-  if(currentProfile?.role==='advisor'||currentProfile?.role==='pembimbing'){
-   const a=await db.from('advisor_students')
-    .select('student_id').eq('advisor_id',session.user.id);
-   if(a.error)throw a.error;
-   const ids=(a.data||[]).map(x=>x.student_id);
-   query=ids.length?query.in('id',ids):query.eq('id',session.user.id);
-  }else if(currentProfile?.role!=='admin'){
-   query=query.eq('id',session.user.id);
-  }
-
-  const rows=await query;
-  if(rows.error)throw rows.error;
-  profiles=rows.data||[];
-  renderRows();
-  $('activity').textContent='Data Supabase berhasil dimuat. Profil terlihat: '+profiles.length+'.';
- }catch(err){
-  $('connection').textContent='Perlu cek akses';
-  $('activity').textContent='Gagal memuat data: '+(err.message||String(err));
- }
-}
-db.auth.onAuthStateChange(()=>setTimeout(load,0));
-load();
+refreshSession();
+draw();
 </script>
 </body>
 </html>
