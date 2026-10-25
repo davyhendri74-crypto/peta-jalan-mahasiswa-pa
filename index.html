@@ -1,102 +1,423 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Peta Jalan Mahasiswa PA</title>
+<meta name="theme-color" content="#123b65">
+<title>Peta Jalan Mahasiswa PA — FEBI UIN Imam Bonjol Padang</title>
 <style>
+:root{--navy:#123b65;--green:#176b49;--bg:#f2f5f9;--ink:#1e293b;--muted:#64748b;--line:#e2e8f0}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#1e293b}
-header{background:#123b65;color:white;padding:24px 18px}
-header h1{font-size:23px;margin:0 0 8px}
-header p{margin:0;color:#dbeafe;font-size:14px}
-main{max-width:950px;margin:auto;padding:18px}
-h2{font-size:19px}
-.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.card{background:white;padding:18px;border-radius:12px;box-shadow:0 2px 8px #0000000c}
-.number{font-size:27px;font-weight:bold;color:#176b49;margin-top:10px}
-.panel{background:white;padding:18px;border-radius:12px;margin-top:16px}
-input,select,button{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;margin:6px 0}
-button{background:#176b49;color:white;border:0;font-weight:bold}
-.note{font-size:13px;color:#64748b;line-height:1.6}
-footer{text-align:center;padding:24px;color:#64748b;font-size:12px}
-@media(min-width:650px){.cards{grid-template-columns:repeat(4,1fr)}}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px Arial,sans-serif}
+header{background:linear-gradient(120deg,#0b2948,#174d79);color:white;padding:22px 18px}
+header h1{font-size:22px;margin:0 0 6px}
+header p{font-size:13px;color:#dbeafe;margin:0}
+main{max-width:1150px;margin:auto;padding:18px}
+.intro{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:5px 0 18px}
+.intro h2{margin:0 0 6px;font-size:23px}
+.muted{color:var(--muted);font-size:13px;line-height:1.6}
+.pill{background:#e3f5e9;color:var(--green);padding:7px 11px;border-radius:30px;font-size:12px;font-weight:bold}
+.layout{display:grid;grid-template-columns:205px 1fr;gap:16px}
+.side,.panel,.stat{background:white;border:1px solid var(--line);border-radius:14px;box-shadow:0 2px 7px #0f172a08}
+.side{padding:10px;height:max-content}
+.nav{width:100%;text-align:left;border:0;background:white;color:#475569;padding:12px;border-radius:9px;margin:2px 0}
+.nav.active,.nav:hover{background:#eaf1f8;color:var(--navy);font-weight:bold}
+.nav span{display:inline-block;width:25px}
+.side .muted{border-top:1px solid var(--line);padding:12px 6px 3px;margin-top:10px;font-size:11px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.stat{padding:16px}
+.stat small{color:var(--muted);font-weight:bold;font-size:11px}
+.num{font-size:28px;font-weight:bold;color:var(--navy);margin:10px 0 5px}
+.stat .muted{font-size:11px}
+.panel{padding:17px;margin-top:14px;min-width:0}
+.panel h3{margin:0 0 13px;font-size:17px}
+.twocol{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.step{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fbfdff}
+.step b{display:block;color:var(--navy);font-size:13px;margin-bottom:7px}
+.step p{font-size:11px;color:var(--muted);line-height:1.5;margin:0}
+.btn,input,select,textarea{font:inherit;border-radius:8px}
+.btn{border:0;padding:11px 14px;background:var(--green);color:white;font-weight:bold}
+.btn.alt{background:#eaf1f8;color:var(--navy)}
+.btn.outline{background:white;color:var(--navy);border:1px solid var(--line)}
+.btn.full{width:100%;margin:4px 0}
+.field{margin:11px 0}
+.field label{display:block;font-size:12px;font-weight:bold;margin-bottom:5px;color:#475569}
+.field input,.field select,.field textarea,.search{width:100%;padding:11px;border:1px solid #cbd5e1;background:white;color:var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line)}
+th{font-size:11px;color:var(--muted);text-transform:uppercase}
+.tablewrap{overflow-x:auto}
+.empty{text-align:center;color:var(--muted);padding:25px 10px}
+.notice{background:#fff7e6;border:1px solid #f0d79e;color:#76551a;border-radius:9px;padding:12px;font-size:12px;line-height:1.6;margin:12px 0}
+.hidden{display:none!important}
+.auth{max-width:440px;margin:20px auto;background:white;border:1px solid var(--line);border-radius:14px;padding:20px}
+.msg{font-size:13px;line-height:1.6;margin-top:10px;overflow-wrap:anywhere}
+.foot{text-align:center;color:var(--muted);font-size:11px;padding:24px}
+@media(max-width:800px){
+.layout{grid-template-columns:1fr}
+.side{display:flex;overflow-x:auto;gap:3px}
+.nav{white-space:nowrap;width:auto}
+.side .muted{display:none}
+.stats{grid-template-columns:repeat(2,1fr)}
+.twocol{grid-template-columns:1fr}
+.steps{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
+
 <header>
-<h1>Peta Jalan Kehidupan Mahasiswa</h1>
+<h1>🧭 Peta Jalan Mahasiswa PA</h1>
 <p>Dashboard Pembimbing Akademik · FEBI UIN Imam Bonjol Padang</p>
 </header>
+
 <main>
-<h2>Ringkasan Akademik</h2>
-<div class="cards">
-<div class="card">Mahasiswa<div class="number" id="mhs">—</div></div>
-<div class="card">Pembimbing PA<div class="number" id="pa">—</div></div>
-<div class="card">Peta Jalan<div class="number" id="roadmap">—</div></div>
-<div class="card">Perlu Tindak Lanjut<div class="number" id="follow">—</div></div>
+<div class="intro">
+<div>
+<h2>Dashboard Pembimbing Akademik</h2>
+<div class="muted">Pantau profil, perjalanan studi, dan dokumen akademik mahasiswa.</div>
 </div>
-<div class="panel">
-<h2>Akses Pembimbing Akademik</h2>
-<p>Gunakan pencarian untuk menyiapkan penelusuran mahasiswa bimbingan.</p>
-<input id="nim" placeholder="Masukkan NIM mahasiswa">
-<button onclick="cari()">Cari Mahasiswa</button>
-<p id="hasil"></p>
-<p class="note">Pencarian ini masih berupa demonstrasi dan belum mengambil data mahasiswa.</p>
+<span class="pill" id="connection">Memeriksa koneksi…</span>
 </div>
+
+<section id="login" class="auth hidden">
+<h3>Masuk ke dashboard</h3>
+<p class="muted">Gunakan akun yang sudah terdaftar. Data hanya ditampilkan sesuai hak akses.</p>
+<form id="loginForm">
+<div class="field">
+<label>Email kampus</label>
+<input id="email" type="email" required autocomplete="username">
+</div>
+<div class="field">
+<label>Kata sandi</label>
+<input id="password" type="password" required autocomplete="current-password">
+</div>
+<button class="btn full" type="submit">Masuk</button>
+<div id="loginMsg" class="msg"></div>
+</form>
+</section>
+
+<div class="layout" id="layout">
+<aside class="side">
+<button class="nav active" data-page="home"><span>▦</span>Ringkasan</button>
+<button class="nav" data-page="students"><span>♙</span>Mahasiswa</button>
+<button class="nav" data-page="roadmap"><span>◷</span>Peta Jalan Studi</button>
+<button class="nav" data-page="docs"><span>▤</span>Dokumen</button>
+<button class="nav" data-page="account"><span>⚙</span>Akun & koneksi</button>
+<div class="muted">Keamanan data menggunakan autentikasi dan kebijakan Row Level Security (RLS).</div>
+</aside>
+
+<div>
+<section id="page-home">
+<div class="stats">
+<div class="stat">
+<small>PROFIL TERLIHAT</small>
+<div class="num" id="studentCount">—</div>
+<div class="muted">Sesuai hak akses akun</div>
+</div>
+<div class="stat">
+<small>PEMBIMBING PA</small>
+<div class="num" id="advisorCount">—</div>
+<div class="muted">Profil dengan peran pembimbing</div>
+</div>
+<div class="stat">
+<small>VERSI PETA JALAN</small>
+<div class="num" id="versionCount">—</div>
+<div class="muted">Dokumen yang tercatat</div>
+</div>
+<div class="stat">
+<small>STATUS AKUN</small>
+<div class="num" style="font-size:19px" id="accountStatus">Pratinjau</div>
+<div class="muted" id="accountStatusText">Masuk untuk data terlindungi</div>
+</div>
+</div>
+
+<div class="twocol">
 <div class="panel">
-<h2>Peta Jalan Studi</h2>
-<label>Program Studi</label>
-<select id="prodi">
+<h3>Alur perjalanan studi · 8 semester</h3>
+<div class="steps">
+<div class="step"><b>01 · Fondasi</b><p>Semester 1–2<br>Adaptasi dan fondasi akademik.</p></div>
+<div class="step"><b>02 · Kompetensi</b><p>Semester 3–4<br>Penguatan kompetensi.</p></div>
+<div class="step"><b>03 · Pengalaman</b><p>Semester 5–6<br>Riset, magang, dan MBKM.</p></div>
+<div class="step"><b>04 · Penyelesaian</b><p>Semester 7–8<br>Skripsi dan persiapan kelulusan.</p></div>
+</div>
+<p class="muted" id="progressText">Ringkasan akan menyesuaikan data yang tersedia.</p>
+</div>
+
+<div class="panel">
+<h3>Akses cepat</h3>
+<button class="btn alt full" data-jump="students">Daftar mahasiswa</button>
+<button class="btn alt full" data-jump="roadmap">Rencana studi</button>
+<button class="btn alt full" data-jump="docs">Dokumen peta jalan</button>
+<p class="muted">Data nyata hanya dimuat setelah login dan izin database sesuai.</p>
+</div>
+</div>
+
+<div class="panel">
+<h3>Status sistem</h3>
+<div id="activity" class="empty">Dashboard berhasil dimuat. Memeriksa koneksi Supabase…</div>
+<button class="btn outline" id="refresh">Muat ulang data</button>
+</div>
+</section>
+
+<section id="page-students" class="hidden">
+<div class="panel">
+<h3>Daftar mahasiswa</h3>
+<input id="searchStudent" class="search" placeholder="Cari nama atau NIM">
+<div class="tablewrap">
+<table>
+<thead><tr><th>Nama</th><th>NIM</th><th>Program studi</th><th>Angkatan</th><th>Peran</th></tr></thead>
+<tbody id="students"><tr><td colspan="5" class="empty">Masuk untuk melihat data.</td></tr></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section id="page-roadmap" class="hidden">
+<div class="panel">
+<h3>Perencanaan peta jalan studi</h3>
+<p class="muted">Formulir rencana akademik. Pratinjau tidak disimpan permanen ke database.</p>
+<div class="field">
+<label>Program studi</label>
+<select id="program">
 <option>Manajemen Bisnis Syariah</option>
 <option>Ekonomi Syariah</option>
 <option>Perbankan Syariah</option>
 <option>Akuntansi Syariah</option>
 </select>
+</div>
+<div class="field">
 <label>Tahap studi</label>
-<select id="tahap">
+<select id="stage">
 <option>Semester 1–2: Adaptasi dan fondasi</option>
 <option>Semester 3–4: Penguatan kompetensi</option>
 <option>Semester 5–6: Riset dan pengalaman</option>
 <option>Semester 7–8: Penyelesaian studi</option>
 </select>
-<label>Catatan rencana mahasiswa</label>
-<input id="catatan" placeholder="Tuliskan target akademik">
-<button onclick="simpan()">Tampilkan Ringkasan</button>
-<div id="ringkasan"></div>
 </div>
-<p class="note">Versi awal dashboard. Data mahasiswa, autentikasi, unggah dokumen, dan penyimpanan Supabase belum diaktifkan.</p>
-</main>
-<footer>FEBI · UIN Imam Bonjol Padang</footer>
-<script>
-function cari(){
-let n=document.getElementById('nim').value.trim();
-document.getElementById('hasil').textContent=n?
-"NIM "+n+" siap dicari setelah database dihubungkan.":"Silakan masukkan NIM terlebih dahulu.";
-}
-function simpan(){
-let p=document.getElementById('prodi').value;
-let t=document.getElementById('tahap').value;
-let c=document.getElementById('catatan').value||"Belum ada catatan";
-document.getElementById('ringkasan').innerHTML="";
-let d=document.createElement('p');
-d.textContent="Program studi: "+p+" | Tahap: "+t+" | Target: "+c;
-document.getElementById('ringkasan').appendChild(d);
-}
+<div class="field">
+<label>Target akademik</label>
+<textarea id="target" rows="3" placeholder="Tuliskan target akademik mahasiswa"></textarea>
+</div>
+<button class="btn" id="makePlan">Buat ringkasan</button>
+<div id="planResult" class="notice hidden"></div>
+</div>
+</section>
 
-</script>
+<section id="page-docs" class="hidden">
+<div class="panel">
+<h3>Arsip dokumen peta jalan</h3>
+<p class="muted">Dirancang untuk bucket privat <b>roadmap-private</b>. Daftar berkas hanya boleh ditampilkan setelah aturan akses Storage diuji.</p>
+<div class="tablewrap">
+<table>
+<thead><tr><th>Nama berkas</th><th>Ukuran</th><th>Waktu unggah</th></tr></thead>
+<tbody id="documents"><tr><td colspan="3" class="empty">Masuk untuk memuat dokumen yang diizinkan.</td></tr></tbody>
+</table>
+</div>
+<div class="notice">Jangan unggah dokumen pribadi sebelum izin mahasiswa dan pembimbing diuji.</div>
+</div>
+</section>
+
+<section id="page-account" class="hidden">
+<div class="panel">
+<h3>Akun & koneksi Supabase</h3>
+<p id="accountInfo" class="muted">Menyiapkan koneksi…</p>
+<div id="profileInfo" class="notice">Profil akun akan tampil setelah login.</div>
+<button id="openLogin" class="btn">Masuk</button>
+<button id="logout" class="btn outline hidden">Keluar</button>
+</div>
+</section>
+
+<div id="globalMsg" class="msg"></div>
+</div>
+</div>
+
+<div class="foot">FEBI · UIN Imam Bonjol Padang<br>Peta Jalan Mahasiswa PA</div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = "https://atwogepalbdygirqbkrq.supabase.co";
-const SUPABASE_KEY = "sb_publishable_qE1DYszSXEaNsY01PPw6Dg_EkzKGOn-";
+const SUPABASE_URL="https://atwogepalbdygirqbkrq.supabase.co";
+const SUPABASE_KEY="sb_publishable_qE1DYszSXEaNsY01PPw6Dg_EkzKGOn-";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
+let user=null,profile=null,visibleProfiles=[];
+const el=id=>document.getElementById(id);
+
+function showPage(page){
+ ['home','students','roadmap','docs','account'].forEach(p=>
+  el('page-'+p).classList.toggle('hidden',p!==page)
+ );
+ document.querySelectorAll('[data-page]').forEach(b=>
+  b.classList.toggle('active',b.dataset.page===page)
+ );
+}
+
+document.querySelectorAll('[data-page]').forEach(b=>
+ b.addEventListener('click',()=>showPage(b.dataset.page))
 );
+document.querySelectorAll('[data-jump]').forEach(b=>
+ b.addEventListener('click',()=>showPage(b.dataset.jump))
+);
+
+el('openLogin').onclick=()=>{
+ el('login').classList.remove('hidden');
+ el('email').focus();
+ window.scrollTo({top:0,behavior:'smooth'});
+};
+
+el('refresh').onclick=load;
+el('searchStudent').oninput=renderStudents;
+
+el('makePlan').onclick=()=>{
+ el('planResult').textContent=
+ 'Program studi: '+el('program').value+
+ ' | Tahap: '+el('stage').value+
+ ' | Target: '+(el('target').value.trim()||'Belum ditentukan')+
+ '. Ini pratinjau; belum disimpan permanen.';
+ el('planResult').classList.remove('hidden');
+};
+
+el('loginForm').onsubmit=async e=>{
+ e.preventDefault();
+ el('loginMsg').textContent='Memeriksa akun…';
+ const {error}=await db.auth.signInWithPassword({
+  email:el('email').value.trim(),
+  password:el('password').value
+ });
+ if(error){
+  el('loginMsg').textContent='Gagal masuk: '+error.message;
+  return;
+ }
+ el('loginMsg').textContent='Login berhasil.';
+ await load();
+};
+
+el('logout').onclick=async()=>{
+ await db.auth.signOut();
+ await load();
+};
+
+function renderStudents(){
+ const q=el('searchStudent').value.toLowerCase().trim();
+ const list=visibleProfiles.filter(p=>
+  [p.full_name,p.nim,p.program_study,p.cohort,p.role]
+   .some(v=>String(v||'').toLowerCase().includes(q))
+ );
+ el('students').innerHTML='';
+ if(!list.length){
+  el('students').innerHTML=
+   '<tr><td colspan="5" class="empty">'+
+   (visibleProfiles.length?'Tidak ada hasil yang cocok.':'Belum ada profil yang dapat ditampilkan.')+
+   '</td></tr>';
+  return;
+ }
+ list.forEach(p=>{
+  const tr=document.createElement('tr');
+  [p.full_name||'—',p.nim||'—',p.program_study||'—',p.cohort||'—',p.role||'—'].forEach(v=>{
+   const td=document.createElement('td');
+   td.textContent=v;
+   tr.appendChild(td);
+  });
+  el('students').appendChild(tr);
+ });
+}
+
+async function load(){
+ try{
+  const {data:{session},error:se}=await db.auth.getSession();
+  if(se)throw se;
+  user=session?.user||null;
+
+  if(!user){
+   el('connection').textContent='● Supabase siap';
+   el('connection').style.background='#e3f5e9';
+   el('layout').classList.remove('hidden');
+   el('login').classList.add('hidden');
+   el('accountStatus').textContent='Pratinjau';
+   el('accountStatusText').textContent='Masuk untuk data terlindungi';
+   el('studentCount').textContent='—';
+   el('advisorCount').textContent='—';
+   el('versionCount').textContent='—';
+   el('activity').textContent='Dashboard siap. Masuk menggunakan akun Supabase yang terdaftar untuk memuat data nyata.';
+   el('accountInfo').textContent='Project Supabase tersambung. Masuk menggunakan akun yang sudah terdaftar.';
+   el('profileInfo').textContent='Belum ada sesi login. Tabel profiles kosong tidak menghalangi tampilan dashboard.';
+   el('openLogin').classList.remove('hidden');
+   el('logout').classList.add('hidden');
+   visibleProfiles=[];
+   renderStudents();
+   return;
+  }
+
+  el('connection').textContent='● Sesi aktif';
+  el('accountStatus').textContent='Aktif';
+  el('accountStatusText').textContent='Terautentikasi';
+  el('openLogin').classList.add('hidden');
+  el('logout').classList.remove('hidden');
+  el('accountInfo').textContent='Email: '+user.email+' · ID pengguna: '+user.id;
+
+  const pr=await db.from('profiles')
+   .select('id,full_name,role,nim,program_study,cohort')
+   .eq('id',user.id).maybeSingle();
+  if(pr.error)throw pr.error;
+  profile=pr.data;
+
+  el('profileInfo').textContent=profile
+   ?('Nama: '+(profile.full_name||'—')+' · Peran: '+(profile.role||'belum diatur')+' · Program studi: '+(profile.program_study||'—'))
+   :'Akun masuk, tetapi profil belum tersedia di tabel profiles. Admin perlu menyiapkan profil akun ini.';
+
+  const count=await db.from('profiles').select('*',{count:'exact',head:true});
+  if(count.error)throw count.error;
+
+  const advisors=await db.from('profiles')
+   .select('*',{count:'exact',head:true})
+   .in('role',['advisor','pembimbing']);
+  if(advisors.error)throw advisors.error;
+
+  const versions=await db.from('roadmap_versions').select('*',{count:'exact',head:true});
+  if(versions.error)throw versions.error;
+
+  el('studentCount').textContent=count.count??0;
+  el('advisorCount').textContent=advisors.count??0;
+  el('versionCount').textContent=versions.count??0;
+
+  let query=db.from('profiles')
+   .select('id,full_name,role,nim,program_study,cohort')
+   .order('full_name');
+
+  if(profile?.role==='advisor'||profile?.role==='pembimbing'){
+   const a=await db.from('advisor_students')
+    .select('student_id').eq('advisor_id',user.id);
+   if(a.error)throw a.error;
+   const ids=(a.data||[]).map(x=>x.student_id);
+   query=ids.length?query.in('id',ids):query.eq('id',user.id);
+  }else if(profile?.role!=='admin'){
+   query=query.eq('id',user.id);
+  }
+
+  const rows=await query;
+  if(rows.error)throw rows.error;
+  visibleProfiles=rows.data||[];
+  renderStudents();
+
+  el('activity').textContent=
+   'Data Supabase berhasil dimuat. Profil yang terlihat: '+
+   visibleProfiles.length+'. Versi peta jalan tercatat: '+
+   (versions.count??0)+'.';
+  el('progressText').textContent='Ringkasan data terhubung ke Supabase.';
+ }catch(err){
+  el('connection').textContent='Perlu cek akses';
+  el('activity').textContent=
+   'Tampilan dashboard aktif, tetapi data belum berhasil dimuat: '+
+   (err.message||String(err));
+  el('globalMsg').textContent=
+   'Periksa autentikasi, nama peran pada profiles, dan kebijakan RLS. Jangan menonaktifkan RLS.';
+ }
+}
+
+db.auth.onAuthStateChange(()=>setTimeout(load,0));
+load();
 </script>
-
-
 </body>
-</html>
+  </html>
