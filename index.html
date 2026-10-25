@@ -83,6 +83,20 @@ let d=document.createElement('p');
 d.textContent="Program studi: "+p+" | Tahap: "+t+" | Target: "+c;
 document.getElementById('ringkasan').appendChild(d);
 }
+
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://atwogepalbdygirqbkrq.supabase.co";
+const SUPABASE_KEY = "sb_publishable_qE1DYszSXEaNsY01PPw6Dg_EkzKGOn-";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+</script>
+
+
 </body>
 </html>
