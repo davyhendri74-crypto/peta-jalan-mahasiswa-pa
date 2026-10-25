@@ -24,6 +24,7 @@ h2{font-size:1.08rem;margin:0 0 12px}
 label{display:block;font-weight:bold;font-size:.85rem;margin:8px 0 5px}
 input,select,textarea{width:100%;padding:11px;border:1px solid #cbd6e1;border-radius:8px;font:inherit;background:#fff}
 button{font:inherit;font-weight:bold;padding:11px 13px;border:0;border-radius:8px;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
 .primary{background:var(--blue);color:#fff}
 .secondary{background:#e6eff7;color:var(--navy)}
 .tablewrap{overflow:auto;border:1px solid var(--line);border-radius:8px;margin-top:12px}
@@ -31,21 +32,15 @@ table{width:100%;min-width:760px;border-collapse:collapse;font-size:.88rem}
 th{background:var(--navy);color:white;text-align:left;padding:11px;white-space:nowrap}
 td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
 tbody tr:nth-child(even){background:#f3f5f7}
-.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#e6f4eb;color:#17643e;font-size:.78rem}
-.pending{background:#fff0cf;color:#775500}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .tab{background:white;color:var(--navy);border:1px solid var(--line)}
 .tab.active{background:var(--blue);color:white}
 .hidden{display:none!important}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.status{background:#eef4f8;border-radius:8px;padding:10px;margin-top:10px;white-space:pre-wrap;font-size:.88rem}
-.student-card{border:1px solid var(--line);border-radius:9px;padding:12px;margin:8px 0}
-.student-card strong{display:block}
-.student-card small{color:var(--muted)}
+.status{background:#eef4f8;border-radius:8px;padding:10px;margin-top:10px;white-space:pre-wrap;font-size:.88rem;overflow-wrap:anywhere}
 footer{text-align:center;color:var(--muted);font-size:.8rem;padding:12px}
 @media(max-width:650px){
-.tools,.grid{grid-template-columns:1fr}
+.tools{grid-template-columns:1fr}
 .stats{grid-template-columns:1fr 1fr}
 header{padding:17px 13px}
 .card{padding:13px}
@@ -59,6 +54,7 @@ header{padding:17px 13px}
 <p>Fakultas Ekonomi dan Bisnis Islam · UIN Imam Bonjol Padang</p>
 </div>
 </header>
+
 <main>
 <div class="tabs">
 <button class="tab active" data-panel="daftar">Daftar Mahasiswa PA</button>
@@ -69,19 +65,21 @@ header{padding:17px 13px}
 <section id="daftar" class="panel">
 <div class="card">
 <h2>Daftar Mahasiswa Bimbingan Akademik</h2>
-<p class="note">Daftar ini diekstrak dari halaman SIAKAD yang disimpan untuk periode 2026 Ganjil. Total 50 mahasiswa pada file sumber. Data ini bukan sinkronisasi otomatis.</p>
+<p class="note">Daftar awal berasal dari file SIAKAD periode 2026 Ganjil. Data bukan sinkronisasi otomatis; verifikasi kembali ke SIAKAD.</p>
+
 <div class="stats">
-<div class="stat"><b id="total">0</b><span>Baris data awal</span></div>
+<div class="stat"><b id="total">0</b><span>Mahasiswa dalam daftar</span></div>
 <div class="stat"><b id="shown">0</b><span>Hasil pencarian</span></div>
-<div class="stat"><b>PDF / DOC / DOCX</b><span>Format peta jalan hidup</span></div>
+<div class="stat"><b>PDF / Word / Gambar</b><span>Format unggahan</span></div>
 </div>
+
 <div class="tools">
 <div>
 <label for="search">Cari NIM atau nama</label>
 <input id="search" placeholder="Contoh: 2316010127 atau Rita">
 </div>
 <div>
-<label for="prodiFilter">Filter program studi</label>
+<label for="prodiFilter">Program studi</label>
 <select id="prodiFilter">
 <option value="">Semua prodi</option>
 <option>Ekonomi Syariah</option>
@@ -90,68 +88,62 @@ header{padding:17px 13px}
 </select>
 </div>
 <div>
-<label for="angkatanFilter">Filter angkatan</label>
+<label for="angkatanFilter">Angkatan</label>
 <select id="angkatanFilter">
 <option value="">Semua angkatan</option>
-<option>2019</option><option>2020</option><option>2021</option>
-<option>2022</option><option>2023</option><option>2024</option>
+<option>2019</option><option>2020</option>
+<option>2021</option><option>2022</option>
+<option>2023</option><option>2024</option>
 </select>
 </div>
 </div>
+
 <div class="actions">
 <button class="secondary" id="downloadCsv">Unduh daftar CSV</button>
 <button class="secondary" id="printBtn">Cetak daftar</button>
 </div>
+
 <div class="tablewrap">
 <table>
-<thead><tr><th>No.</th><th>NIM</th><th>Nama Mahasiswa</th><th>Program Studi</th><th>Angkatan</th><th>Status Smt.</th><th>Semester</th></tr></thead>
+<thead>
+<tr>
+<th>No.</th><th>NIM</th><th>Nama Mahasiswa</th>
+<th>Program Studi</th><th>Angkatan</th>
+<th>Status Smt.</th><th>Semester</th>
+</tr>
+</thead>
 <tbody id="rows"></tbody>
 </table>
 </div>
-<p class="note">Keterangan status mengikuti huruf yang tampak pada file sumber: A atau N. Verifikasi kembali dengan SIAKAD sebelum dipakai untuk keputusan akademik.</p>
+<p class="note">Status dan semester mengikuti data pada file sumber. Periksa kembali sebelum digunakan untuk keputusan akademik.</p>
 </div>
 </section>
 
 <section id="portal" class="panel hidden">
 <div class="card">
-<h2>Portal Mahasiswa — Masuk / Daftar</h2>
-<p class="note">Gunakan email aktif. Pendaftaran mahasiswa baru akan berstatus menunggu verifikasi dosen PA. Jangan gunakan password yang sama dengan akun SIAKAD.</p>
-<div class="grid">
-<div><label for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="email" placeholder="nama@email.com"></div>
-<div><label for="authPassword">Password (minimal 8 karakter)</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="Password"></div>
-</div>
+<h2>Unggah Peta Jalan Hidup — Tanpa Login</h2>
+<p class="note">Mahasiswa memasukkan NIM, nama sesuai SIAKAD, dan email aktif. Tidak perlu membuat akun atau memasukkan password.</p>
+
+<label for="nim">NIM (10 digit)</label>
+<input id="nim" inputmode="numeric" maxlength="10" placeholder="Contoh: 2316010127" autocomplete="off">
+
+<label for="nama">Nama lengkap sesuai SIAKAD</label>
+<input id="nama" placeholder="Nama lengkap" autocomplete="name">
+
+<label for="email">Email aktif</label>
+<input id="email" type="email" placeholder="nama@email.com" autocomplete="email">
+
+<label for="file">File peta jalan hidup (PDF, DOC, DOCX, JPG, JPEG, PNG; maksimal 10 MB)</label>
+<input id="file" type="file"
+accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png">
+
 <div class="actions">
-<button class="primary" id="signupBtn">Daftar akun</button>
-<button class="secondary" id="loginBtn">Masuk</button>
-<button class="secondary" id="logoutBtn">Keluar</button>
-</div>
-<div class="status" id="authStatus">Belum masuk.</div>
+<button class="primary" id="submitRoadmapBtn">Kirim Peta Jalan Hidup</button>
+<button class="secondary" id="clearFormBtn" type="button">Bersihkan</button>
 </div>
 
-<div class="card">
-<h2>Data Mahasiswa dan Peta Jalan Hidup</h2>
-<div class="grid">
-<div><label for="nim">NIM</label><input id="nim" inputmode="numeric" placeholder="Masukkan NIM 10 digit"></div>
-<div><label for="nama">Nama lengkap sesuai SIAKAD</label><input id="nama" placeholder="Nama lengkap"></div>
-<div>
-<label for="prodi">Program studi</label>
-<select id="prodi">
-<option value="">Pilih program studi</option>
-<option>Ekonomi Syariah</option>
-<option>Perbankan Syariah</option>
-<option>Akuntansi Syariah</option>
-<option>Manajemen Bisnis Syariah</option>
-</select>
-</div>
-<div><label for="angkatan">Angkatan</label><input id="angkatan" inputmode="numeric" placeholder="Contoh: 2023"></div>
-</div>
-<label for="tujuan">Ringkasan tujuan hidup dan akademik</label>
-<textarea id="tujuan" rows="4" placeholder="Target akademik, karier, keluarga, finansial, sosial, dan pengembangan diri."></textarea>
-<label for="file">Dokumen peta jalan hidup (PDF/DOC/DOCX, maks. 10 MB)</label>
-<input id="file" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
-<div class="actions"><button class="primary" id="submitRoadmapBtn">Simpan data & unggah dokumen</button></div>
-<div class="status" id="submitStatus">Masuk terlebih dahulu sebelum menyimpan.</div>
-<p class="note">Data ringkasan disimpan sebagai berkas JSON di bucket privat bersama dokumen. Profil dasar disimpan pada tabel <code>profiles</code>. Pastikan policy RLS Supabase sudah dipasang.</p>
+<div class="status" id="submitStatus" role="status" aria-live="polite">Isi NIM, nama, email, lalu pilih file.</div>
+<p class="note"><strong>Privasi:</strong> file seharusnya disimpan pada bucket privat Supabase melalui layanan server yang memvalidasi unggahan. Jangan memasukkan service-role key ke dalam HTML.</p>
 </div>
 </section>
 
@@ -159,18 +151,17 @@ header{padding:17px 13px}
 <div class="card">
 <h2>Petunjuk dan batas data</h2>
 <ul>
-<li>Daftar awal memuat 50 mahasiswa dari file SIAKAD periode 2026 Ganjil yang diberikan.</li>
-<li>Nama atau NIM yang tidak terlihat jelas tidak dimasukkan agar tidak mengarang data.</li>
-<li>Kolom status semester dan semester hanya diisi jika terlihat pada file sumber.</li>
-<li>Periksa kembali perubahan data pada SIAKAD sebelum keputusan akademik.</li>
-<li>Unggah dokumen pribadi mahasiswa sebaiknya memakai autentikasi, penyimpanan privat, dan kebijakan akses yang membatasi mahasiswa pada dokumennya sendiri.</li>
+<li>Daftar mahasiswa merupakan data awal dari file SIAKAD yang diberikan.</li>
+<li>Daftar pada halaman ini tidak otomatis berubah saat SIAKAD berubah.</li>
+<li>Unggahan tanpa login harus melalui Edge Function yang memvalidasi NIM, nama, email, tipe file, dan ukuran.</li>
+<li>Jangan membuat bucket publik atau membuka Storage Policy untuk semua orang.</li>
 </ul>
-<p class="note">Halaman ini tidak terhubung langsung ke SIAKAD. Pengiriman formulir menggunakan Supabase.</p>
+<p class="note">Halaman ini tidak terhubung langsung ke SIAKAD. Pengunggahan menggunakan Supabase Edge Function dan Storage privat.</p>
 </div>
 </section>
+
 <footer>Dashboard Peta Jalan Mahasiswa PA · FEBI UIN Imam Bonjol Padang</footer>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const students = [
 {"nim":"2116010080","nama":"SALSABILA ASYIFA RAMADHANI","prodi":"Ekonomi Syariah","angkatan":"2021","status":"A","semester":"11"},
@@ -229,13 +220,15 @@ const $ = id => document.getElementById(id);
 
 function draw(){
   const q=$("search").value.toLowerCase().trim();
-  const p=$("prodiFilter").value;
-  const a=$("angkatanFilter").value;
+  const prodi=$("prodiFilter").value;
+  const angkatan=$("angkatanFilter").value;
+
   const list=students.filter(s=>
     (!q||(s.nim+" "+s.nama).toLowerCase().includes(q)) &&
-    (!p||s.prodi===p) &&
-    (!a||s.angkatan===a)
+    (!prodi||s.prodi===prodi) &&
+    (!angkatan||s.angkatan===angkatan)
   );
+
   $("rows").innerHTML="";
   list.forEach((s,i)=>{
     const tr=document.createElement("tr");
@@ -254,7 +247,7 @@ $("search").addEventListener("input",draw);
 $("prodiFilter").addEventListener("change",draw);
 $("angkatanFilter").addEventListener("change",draw);
 
-document.querySelectorAll(".tab").forEach(b=>
+document.querySelectorAll(".tab").forEach(b=>{
   b.addEventListener("click",()=>{
     document.querySelectorAll(".tab").forEach(x=>
       x.classList.toggle("active",x===b)
@@ -262,8 +255,8 @@ document.querySelectorAll(".tab").forEach(b=>
     document.querySelectorAll(".panel").forEach(p=>
       p.classList.toggle("hidden",p.id!==b.dataset.panel)
     );
-  })
-);
+  });
+});
 
 $("downloadCsv").onclick=()=>{
   const head=["NIM","Nama Mahasiswa","Program Studi","Angkatan","Status Smt.","Semester"];
@@ -284,187 +277,130 @@ $("downloadCsv").onclick=()=>{
 };
 
 $("printBtn").onclick=()=>window.print();
+// URL Edge Function Supabase.
+// Fungsi ini harus dibuat dan dideploy terlebih dahulu.
+const UPLOAD_FUNCTION_URL =
+  "https://atwogepalbdygirqbkrq.supabase.co/functions/v1/roadmap-upload";
 
-// Konfigurasi Supabase proyek Anda
-const SUPABASE_URL="https://atwogepalbdygirqbkrq.supabase.co";
-const SUPABASE_ANON_KEY="sb_publishable_qE1DYszSXEaNsY01PPw6Dg_EkzKGOn-";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+// Publishable key boleh dipakai di browser.
+// Jangan pernah menaruh service_role key di HTML publik.
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_qE1DYszSXEaNsY01PPw6Dg_EkzKGOn-";
 
-let currentUser=null;
+const ALLOWED_MIME = new Set([
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "image/jpeg",
+  "image/png"
+]);
 
-function msg(id,text){
-  $(id).textContent=text;
+function status(text){
+  $("submitStatus").textContent=text;
 }
 
-async function refreshSession(){
-  const {data}=await sb.auth.getSession();
-  currentUser=data.session?.user||null;
-  msg("authStatus",currentUser?
-    `Masuk sebagai ${currentUser.email}. User ID: ${currentUser.id}`:
-    "Belum masuk."
-  );
-}
-
-$("signupBtn").onclick=async()=>{
-  const email=$("authEmail").value.trim();
-  const password=$("authPassword").value;
-  if(!email||password.length<8){
-    msg("authStatus","Isi email dan password minimal 8 karakter.");
-    return;
-  }
-  msg("authStatus","Memproses pendaftaran...");
-  const {data,error}=await sb.auth.signUp({
-    email,password,options:{data:{role:"student"}}
-  });
-  if(error){
-    msg("authStatus","Gagal daftar: "+error.message);
-    return;
-  }
-  currentUser=data.user;
-  msg("authStatus",data.session?
-    "Akun berhasil dibuat dan sudah masuk.":
-    "Akun dibuat. Periksa email untuk konfirmasi, lalu masuk."
-  );
-  await refreshSession();
-};
-
-$("loginBtn").onclick=async()=>{
-  const email=$("authEmail").value.trim();
-  const password=$("authPassword").value;
-  msg("authStatus","Memproses login...");
-  const {data,error}=await sb.auth.signInWithPassword({email,password});
-  if(error){
-    msg("authStatus","Gagal masuk: "+error.message);
-    return;
-  }
-  currentUser=data.user;
-  await refreshSession();
-};
-
-$("logoutBtn").onclick=async()=>{
-  const {error}=await sb.auth.signOut();
-  currentUser=null;
-  msg("authStatus",error?
-    "Gagal keluar: "+error.message:
-    "Anda sudah keluar."
-  );
+$("clearFormBtn").onclick=()=>{
+  $("nim").value="";
+  $("nama").value="";
+  $("email").value="";
+  $("file").value="";
+  status("Formulir dibersihkan.");
 };
 
 $("submitRoadmapBtn").onclick=async()=>{
-  try{
-    if(!currentUser){
-      msg("submitStatus","Silakan masuk terlebih dahulu.");
-      return;
-    }
+  const btn=$("submitRoadmapBtn");
 
+  try{
     const nim=$("nim").value.trim();
     const nama=$("nama").value.trim();
-    const prodi=$("prodi").value;
-    const angkatan=$("angkatan").value.trim();
-    const tujuan=$("tujuan").value.trim();
-    const f=$("file").files[0];
+    const email=$("email").value.trim();
+    const file=$("file").files[0];
 
-    if(!/^\d{10}$/.test(nim)||!nama||!prodi||
-       !/^\d{4}$/.test(angkatan)||!tujuan||!f){
-      msg("submitStatus","Lengkapi NIM 10 digit, nama, prodi, angkatan, tujuan, dan dokumen.");
+    if(!/^\d{10}$/.test(nim)){
+      status("NIM harus terdiri dari 10 angka.");
       return;
     }
 
-    if(f.size>10*1024*1024){
-      msg("submitStatus","Ukuran dokumen melebihi 10 MB.");
+    if(!nama){
+      status("Masukkan nama lengkap sesuai SIAKAD.");
       return;
     }
 
-    const official=students.find(s=>s.nim===nim);
-    if(!official){
-      msg("submitStatus","NIM tidak ditemukan pada daftar SIAKAD yang dimuat. Hubungi dosen PA untuk verifikasi.");
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      status("Masukkan alamat email yang valid.");
       return;
     }
 
-    if(official.nama.toLowerCase()!==nama.toLowerCase()){
-      msg("submitStatus","Nama tidak sama dengan daftar SIAKAD. Gunakan nama persis: "+official.nama);
+    if(!file){
+      status("Pilih file peta jalan hidup terlebih dahulu.");
       return;
     }
 
-    if(official.prodi!==prodi||official.angkatan!==angkatan){
-      msg("submitStatus","Prodi atau angkatan tidak cocok dengan daftar SIAKAD: "+official.prodi+", angkatan "+official.angkatan+".");
+    if(file.size===0 || file.size>10*1024*1024){
+      status("Ukuran file harus lebih dari 0 dan maksimal 10 MB.");
       return;
     }
 
-    msg("submitStatus","Menyimpan profil dan mengunggah dokumen...");
+    const extensionOK=/\.(pdf|doc|docx|jpg|jpeg|png)$/i.test(file.name);
 
-    const {error:profileError}=await sb.from("profiles").upsert({
-      id:currentUser.id,
-      full_name:nama,
-      role:"student",
-      nim,
-      program_study:prodi,
-      cohort:angkatan,
-      verification_status:"pending"
-    },{onConflict:"id"});
-
-    if(profileError){
-      msg("submitStatus","Profil belum tersimpan: "+profileError.message+". Periksa policy RLS tabel profiles.");
+    if(!extensionOK || !ALLOWED_MIME.has(file.type)){
+      status("Format tidak didukung. Gunakan PDF, DOC, DOCX, JPG, JPEG, atau PNG.");
       return;
     }
 
-    const safeName=f.name.replace(/[^a-zA-Z0-9._-]/g,"_");
-    const folder=`${currentUser.id}/${nim}`;
-    const docPath=`${folder}/${Date.now()}_${safeName}`;
+    btn.disabled=true;
+    btn.textContent="Mengunggah...";
+    status("Mengirim file ke layanan aman. Mohon tunggu...");
 
-    const {error:uploadError}=await sb.storage
-      .from("roadmap-private")
-      .upload(docPath,f,{
-        upsert:false,
-        contentType:f.type||"application/octet-stream"
-      });
+    const form=new FormData();
+    form.append("nim",nim);
+    form.append("nama",nama);
+    form.append("email",email);
+    form.append("file",file,file.name);
 
-    if(uploadError){
-      msg("submitStatus","Profil tersimpan, tetapi unggah dokumen gagal: "+uploadError.message+". Periksa policy Storage bucket roadmap-private.");
-      return;
+    const response=await fetch(UPLOAD_FUNCTION_URL,{
+      method:"POST",
+      headers:{
+        "apikey":SUPABASE_PUBLISHABLE_KEY
+      },
+      body:form
+    });
+
+    let result={};
+    try{
+      result=await response.json();
+    }catch(e){}
+
+    if(!response.ok){
+      throw new Error(
+        result.error ||
+        result.message ||
+        "Layanan unggah gagal. Periksa Edge Function Supabase."
+      );
     }
 
-    const record={
-      nim,nama,prodi,angkatan,tujuan,
-      file_name:f.name,
-      storage_path:docPath,
-      submitted_at:new Date().toISOString(),
-      user_id:currentUser.id
-    };
-
-    const jsonBlob=new Blob(
-      [JSON.stringify(record,null,2)],
-      {type:"application/json"}
+    status(
+      "Unggahan berhasil diterima. Nomor bukti: "+
+      (result.receipt_id||result.id||"unggahan diterima")+
+      ". Terima kasih."
     );
-    const jsonPath=`${folder}/${Date.now()}_peta_jalan.json`;
 
-    const {error:jsonError}=await sb.storage
-      .from("roadmap-private")
-      .upload(jsonPath,jsonBlob,{
-        upsert:false,
-        contentType:"application/json"
-      });
+    $("nim").value="";
+    $("nama").value="";
+    $("email").value="";
+    $("file").value="";
 
-    if(jsonError){
-      msg("submitStatus","Dokumen terunggah, tetapi ringkasan JSON gagal disimpan: "+jsonError.message);
-      return;
-    }
-
-    msg("submitStatus","Berhasil. Profil berstatus menunggu verifikasi dosen PA. Dokumen dan ringkasan tersimpan di bucket privat Supabase.");
-  }catch(e){
-    msg("submitStatus","Terjadi kesalahan: "+e.message);
+  }catch(error){
+    status(
+      "Unggahan belum berhasil: "+error.message+
+      ". Pastikan Edge Function roadmap-upload sudah dideploy."
+    );
+  }finally{
+    btn.disabled=false;
+    btn.textContent="Kirim Peta Jalan Hidup";
   }
 };
 
-sb.auth.onAuthStateChange((_event,session)=>{
-  currentUser=session?.user||null;
-  msg("authStatus",currentUser?
-    `Masuk sebagai ${currentUser.email}.`:
-    "Belum masuk."
-  );
-});
-
-refreshSession();
 draw();
 </script>
 </body>
